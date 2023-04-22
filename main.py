@@ -1,5 +1,5 @@
 import datetime
-
+import sqlite3
 import discord
 from discord.ext import commands
 import random, logging
@@ -16,6 +16,8 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 bot.remove_command('help')
+con = sqlite3.connect("banned.db")
+cur = con.cursor()
 
 
 @bot.event
@@ -66,23 +68,9 @@ async def ban(ctx, member: discord.Member, reason='Без причины'):
     await ctx.message.delete()
     await member.ban(reason=reason)
     await ctx.send(f'Пользователь {member} был забанен по причине: {reason}')
-
-
-@bot.command(name='unban')
-@commands.has_role('Админ')
-async def ban(ctx, member: discord.Member):
-    await ctx.message.delete()
-    await member.unban()
-
-
-# @bot.command(name='banned')
-# @commands.has_role('Админ')
-# async def banned(ctx):
-#    await ctx.message.delete()
-#    if not bnnd:
-#        await ctx.send(*bnnd)
-#    else:
-#        await ctx.send('Никто не забанен')
+    bndmember = str(member).split('#')
+    cur.execute(f"INSERT INTO banned VALUES('{bndmember[0]}', '#{bndmember[1]}')")
+    con.commit()
 
 
 @bot.command(name='bottype')
@@ -103,7 +91,19 @@ async def my_randint(ctx, min_int=1, max_int=100):
 async def my_randint(ctx):
     await ctx.message.delete()
     d6 = random.randint(1, 6)
-    await ctx.send(d6)
+    await ctx.send(f'Вам выпало число {d6}')
+    if d6 == 1:
+        await ctx.send(file=discord.File('img/d1.jpg'))
+    elif d6 == 2:
+        await ctx.send(file=discord.File('img/d2.jpg'))
+    elif d6 == 3:
+        await ctx.send(file=discord.File('img/d3.jpg'))
+    elif d6 == 4:
+        await ctx.send(file=discord.File('img/d4.jpg'))
+    elif d6 == 5:
+        await ctx.send(file=discord.File('img/d5.jpg'))
+    elif d6 == 6:
+        await ctx.send(file=discord.File('img/d6.jpg'))
 
 
 @bot.command(name='clear')
@@ -125,7 +125,7 @@ async def mute(ctx, member: discord.Member, timelimit):
 async def help(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='Помощь с командами')
-    embed.add_field(name='!ban @name reason', value='Банит участника @name по причине member')
+    embed.add_field(name='!ban @name reason', value='Банит участника @name по причине reason')
     embed.add_field(name='!unban @name', value='Разбанивает участника @name')
     embed.add_field(name='!clear n', value='Очистка последних n сообщений чата, при отсутствии аргуметов n = 30')
     embed.add_field(name='!d6', value='Бросок шестигранного кубика')
@@ -135,6 +135,6 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 
-TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.GuLcsb.Tid0-FvYJo_xL2bVwiP5zl7urX6OuhBKD6umwg"
+TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.G_DCkS.taxCQfsqQoi6iO28Ncd6mq5UuHe6WH1U85ouC0"
 
 bot.run(TOKEN)
