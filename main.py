@@ -1,8 +1,10 @@
 import datetime
+import logging
+import random
 import sqlite3
+
 import discord
 from discord.ext import commands
-import random, logging
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -42,10 +44,10 @@ async def on_member_join(member):
 async def on_raw_reaction_add(payload):
     guild = discord.utils.find(lambda g: g.id == payload.guild_id, bot.guilds)
     member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
-    if payload.message_id == 1098326475331080303 and payload.emoji.name == '🔴':
+    if payload.message_id == 1099637285525389312 and payload.emoji.name == '🔴':
         role = discord.utils.get(member.guild.roles, id=1096033090272505967)
         await member.add_roles(role)
-    elif payload.message_id == 1098326475331080303 and payload.emoji.name == '🔵':
+    elif payload.message_id == 1099637285525389312 and payload.emoji.name == '🔵':
         role = discord.utils.get(member.guild.roles, id=1096033139207442573)
         await member.add_roles(role)
 
@@ -54,10 +56,10 @@ async def on_raw_reaction_add(payload):
 async def on_raw_reaction_remove(payload):
     guild = discord.utils.find(lambda g: g.id == payload.guild_id, bot.guilds)
     member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
-    if payload.message_id == 1098326475331080303 and payload.emoji.name == '🔴':
+    if payload.message_id == 1099637285525389312 and payload.emoji.name == '🔴':
         role = discord.utils.get(member.guild.roles, id=1096033090272505967)
         await member.remove_roles(role)
-    elif payload.message_id == 1098326475331080303 and payload.emoji.name == '🔵':
+    elif payload.message_id == 1099637285525389312 and payload.emoji.name == '🔵':
         role = discord.utils.get(member.guild.roles, id=1096033139207442573)
         await member.remove_roles(role)
 
@@ -134,6 +136,6 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 
-TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.GcgBsM.Xd4fKcO1HlRtsfC6gWLlrRzyAgVLvFparn8OIo"
+TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.G5E7tr.3nOInKCP8pUmxyqaD8kjHL8J-kTCkxVK600Muc"
 
 bot.run(TOKEN)
