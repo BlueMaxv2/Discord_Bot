@@ -126,7 +126,6 @@ async def help(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='Помощь с командами')
     embed.add_field(name='!ban @name reason', value='Банит участника @name по причине reason')
-    embed.add_field(name='!unban @name', value='Разбанивает участника @name')
     embed.add_field(name='!clear n', value='Очистка последних n сообщений чата, при отсутствии аргуметов n = 30')
     embed.add_field(name='!d6', value='Бросок шестигранного кубика')
     embed.add_field(name='!roll n p', value='Случайное число от n до p, при отсутствии аргуметов n = 1, p = 100')
@@ -135,6 +134,6 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 
-TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.G_DCkS.taxCQfsqQoi6iO28Ncd6mq5UuHe6WH1U85ouC0"
+TOKEN = "MTA5MzA5MzI5NDE4MDkyNTQ5MQ.GcgBsM.Xd4fKcO1HlRtsfC6gWLlrRzyAgVLvFparn8OIo"
 
 bot.run(TOKEN)
