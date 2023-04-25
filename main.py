@@ -6,22 +6,25 @@ import sqlite3
 import discord
 from discord.ext import commands
 
+# логгер
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+# инициализация бота
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-
 bot = commands.Bot(command_prefix='!', intents=intents)
 bot.remove_command('help')
+#инициализация базы данных
 con = sqlite3.connect("banned.db")
 cur = con.cursor()
 
 
+#оповещение о включении бота
 @bot.event
 async def on_ready():
     print(f'{bot.user} подключен к Discord!')
@@ -32,6 +35,7 @@ async def on_ready():
         )
 
 
+#сообщение при подключении пользователя
 @bot.event
 async def on_member_join(member):
     channel = bot.get_channel(1095765565370535998)
@@ -40,6 +44,7 @@ async def on_member_join(member):
     await channel.send(f'Пользователь {member.name}, присоединился!')
 
 
+#распределение ролей при реакции
 @bot.event
 async def on_raw_reaction_add(payload):
     guild = discord.utils.find(lambda g: g.id == payload.guild_id, bot.guilds)
@@ -64,6 +69,7 @@ async def on_raw_reaction_remove(payload):
         await member.remove_roles(role)
 
 
+#бан пользователя
 @bot.command(name='ban')
 @commands.has_role('Админ')
 async def ban(ctx, member: discord.Member, reason='Без причины'):
